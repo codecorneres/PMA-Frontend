@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
   createBoardModal: {
     width: 400,
   },
-  cardModal: {
+  issueModal: {
     width: 800,
     [theme.breakpoints.down("sm")]: {
       maxWidth: 400,

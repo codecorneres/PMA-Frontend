@@ -6,22 +6,22 @@ import { TextField } from "@material-ui/core";
 
 const ListTitle = ({ list }) => {
   const [editing, setEditing] = useState(false);
-  const [title, setTitle] = useState(list.title);
+  const [title, setTitle] = useState(list?.title);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTitle(list.title);
-  }, [list.title]);
+    setTitle(list?.title);
+  }, [list?.title]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateList(list.id, title));
+    dispatch(updateList(list?.id, title));
     setEditing(false);
   };
 
   return !editing ? (
     <h3 className="list-title" onClick={() => setEditing(true)}>
-      {list.title}
+      {list?.title}
     </h3>
   ) : (
     <form onSubmit={(e) => onSubmit(e)}>

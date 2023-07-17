@@ -10,11 +10,15 @@ import CreateCardForm from "./CreateCardForm";
 import Button from "@material-ui/core/Button";
 
 const List = ({ listId, index }) => {
+  console.log(listId, "THE LIST iD THAT i WANT");
   const [addingCard, setAddingCard] = useState(false);
   const list = useSelector((state) =>
-    state.board.lists.find((object) => object.id === listId)
+    state?.board?.lists?.find((list) => {
+      // console.log(list, "all lists with be logged");
+      return list.id === listId;
+    })
   );
-  const issues = useSelector((state) => state.board.issues);
+  // const issues = useSelector((state) => state.board.issues);
 
   const dispatch = useDispatch();
   // console.log(list, "a single list");
@@ -42,7 +46,7 @@ const List = ({ listId, index }) => {
 
       <div className={`list ${addingCard ? "adding-card" : "not-adding-card"}`}>
         <div className="cards">
-          {issues.map((issue, index) => (
+          {list?.issues?.map((issue, index) => (
             <Card key={issue.id} issueId={issue.id} list={list} index={index} />
           ))}
         </div>

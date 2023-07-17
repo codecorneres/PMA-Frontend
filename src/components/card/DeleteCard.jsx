@@ -8,7 +8,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
 
-const DeleteCard = ({ issueId, setOpen, list }) => {
+const DeleteCard = ({ issueId }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useDispatch();
 
@@ -23,7 +23,6 @@ const DeleteCard = ({ issueId, setOpen, list }) => {
   const onDeleteCard = async () => {
     dispatch(deleteIssue(issueId));
     setOpenDialog(false);
-    setOpen(false);
   };
 
   return (
@@ -53,8 +52,6 @@ const DeleteCard = ({ issueId, setOpen, list }) => {
 
 DeleteCard.propTypes = {
   issueId: PropTypes.number.isRequired,
-  setOpen: PropTypes.func.isRequired,
-  list: PropTypes.object.isRequired,
 };
 
 export default DeleteCard;

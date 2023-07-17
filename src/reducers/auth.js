@@ -7,6 +7,8 @@ const initialState = {
   user: null,
 };
 
+console.log(initialState.isAuthenticated, "bababab");
+
 const authReducer = (state = initialState, action) => {
   const { type, payload } = action;
   // console.log(payload, "token will lie here jghfasdweft");

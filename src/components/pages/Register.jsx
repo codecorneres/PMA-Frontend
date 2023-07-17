@@ -1,105 +1,105 @@
 // https://github.com/mui/material-ui/blob/master/docs/src/pages/premium-themes/onepirate/SignUp.js
 
-import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { register } from '../../actions/auth';
+import React, { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { register } from "../../actions/auth";
 
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 
-import Copyright from '../other/Copyright';
-import useStyles from '../../utils/formStyles';
-import { MenuItem } from '@material-ui/core';
+import Copyright from "../other/Copyright";
+import useStyles from "../../utils/formStyles";
+import { MenuItem } from "@material-ui/core";
 
 const Register = () => {
   const roles = [
     {
       value: 1,
-      label: 'Developer',
+      label: "Developer",
     },
     {
       value: 2,
-      label: 'Admin',
+      label: "Admin",
     },
     {
       value: 3,
-      label: 'Staff',
+      label: "Staff",
     },
     {
       value: 4,
-      label: 'HR',
+      label: "HR",
     },
-  ]
+  ];
   const classes = useStyles();
 
-  const [signedUp, setsignedUp] = useState(false)
+  const [signedUp, setsignedUp] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    password2: '',
-    role_id: 1
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
+    role_id: 1,
   });
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    document.title = 'CodeCorners PMA| Sign Up';
+    document.title = "CodeCorners PMA| Sign Up";
   }, []);
 
   const { name, email, password, password2, role_id } = formData;
 
   const onChange = (e) => {
     // console.log(formData)
-    return setFormData({ ...formData, [e.target.name]: e.target.value })
+    return setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
-      console.log("The entered passwords do not match")
+      console.log("The entered passwords do not match");
     } else {
-      dispatch(register( name, email, password, role_id ));
+      dispatch(register(name, email, password, role_id));
       setsignedUp(true);
     }
   };
 
   if (isAuthenticated) {
-    return <Navigate to='/dashboard' />;
+    return <Navigate to="/dashboard" />;
   }
-  if(signedUp){
-    return <Navigate to='/login' />;
+  if (signedUp) {
+    return <Navigate to="/login" />;
   }
 
-  console.log(formData.role_id, "role_id value in number")
+  // console.log(formData.role_id, "role_id value in number")
 
   return (
-    <Container component='main' maxWidth='xs' className={classes.container}>
+    <Container component="main" maxWidth="xs" className={classes.container}>
       <CssBaseline />
       <div className={classes.paper}>
-        <Typography component='h1' variant='h4'>
+        <Typography component="h1" variant="h4">
           CodeCorners PMA
         </Typography>
-        <Typography component='h1' variant='h5'>
+        <Typography component="h1" variant="h5">
           Sign up
         </Typography>
         <form className={classes.form} onSubmit={(e) => onSubmit(e)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                autoComplete='name'
-                name='name'
-                variant='outlined'
+                autoComplete="name"
+                name="name"
+                variant="outlined"
                 required
                 fullWidth
-                label='Your Name'
+                label="Your Name"
                 autoFocus
                 value={name}
                 onChange={(e) => onChange(e)}
@@ -107,71 +107,71 @@ const Register = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant='outlined'
+                variant="outlined"
                 required
                 fullWidth
-                label='Email Address'
-                name='email'
-                autoComplete='email'
+                label="Email Address"
+                name="email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => onChange(e)}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant='outlined'
+                variant="outlined"
                 required
                 fullWidth
-                name='password'
-                label='Password'
-                type='password'
+                name="password"
+                label="Password"
+                type="password"
                 value={password}
                 onChange={(e) => onChange(e)}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant='outlined'
+                variant="outlined"
                 required
                 fullWidth
-                name='password2'
-                label='Confirm Password'
-                type='password'
+                name="password2"
+                label="Confirm Password"
+                type="password"
                 value={password2}
                 onChange={(e) => onChange(e)}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                  variant='outlined'
-                  required
-                  fullWidth
-                  name='role_id'
-                  label='Your Role'
-                  value={role_id}
-                  onChange={(e) => onChange(e)}
-                  select
-                >
-                  {roles?.map((role, index) => (
-                      <MenuItem key={index} value={role.value}>
-                        {role.label}
-                      </MenuItem>
-                  ))}
+                variant="outlined"
+                required
+                fullWidth
+                name="role_id"
+                label="Your Role"
+                value={role_id}
+                onChange={(e) => onChange(e)}
+                select
+              >
+                {roles?.map((role, index) => (
+                  <MenuItem key={index} value={role.value}>
+                    {role.label}
+                  </MenuItem>
+                ))}
               </TextField>
             </Grid>
           </Grid>
           <Button
-            type='submit'
+            type="submit"
             fullWidth
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             className={classes.submit}
           >
             Sign Up
           </Button>
-          <Grid container justifyContent='flex-end'>
+          <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href='/login' variant='body2'>
+              <Link href="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

@@ -121,7 +121,7 @@ export const getIssues = () => async (dispatch) => {
 // Get Issue
 export const getIssue = (id) => async (dispatch) => {
   try {
-    console.log(id, "the issue id");
+    // console.log(id, "the issue id");
     const res = await axios.get(`${BASE_URL}/issues/issues/${id}`);
 
     dispatch({
@@ -138,7 +138,7 @@ export const addIssue = (title) => async (dispatch) => {
   try {
     const body = JSON.stringify({ title });
     const res = await axios.post(`${BASE_URL}/issues/issue`, body, config);
-    console.log(res.data, "the issues which is returned");
+    // console.log(res.data, "the issues which is returned");
     dispatch({
       type: ADD_ISSUE,
       payload: res.data,
@@ -214,7 +214,7 @@ export const addList = (title) => async (dispatch) => {
     const body = JSON.stringify({ title });
     const res = await axios.post(`${BASE_URL}/lists/list`, body, config);
 
-    console.log(res.data, "the added list, banana");
+    // console.log(res.data, "the added list, banana");
     dispatch({
       type: ADD_LIST,
       payload: res.data,

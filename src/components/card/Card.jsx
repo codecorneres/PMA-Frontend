@@ -2,10 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { getIssue, updateIssue } from "../../actions/board";
-
+import { Link } from "react-router-dom";
 import CardMUI from "@material-ui/core/Card";
 import EditIcon from "@material-ui/icons/Edit";
-import CloseIcon from "@material-ui/icons/Close";
+// import CloseIcon from "@material-ui/icons/Close";
 import SubjectIcon from "@material-ui/icons/Subject";
 import {
   TextField,
@@ -14,22 +14,25 @@ import {
   Avatar,
   Tooltip,
 } from "@material-ui/core";
-import CardModal from "./CardModal";
+// import Issue from "../pages/Issue";
 
 const Card = ({ issueId, list, index }) => {
   const [editing, setEditing] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  // const [openModal, setOpenModal] = useState(false);
   const [title, setTitle] = useState("");
   const [height, setHeight] = useState(0);
-  const [completeItems, setCompleteItems] = useState(0);
+  // const [completeItems, setCompleteItems] = useState(0);
 
-  const cardRef = useRef(null);
-  const card = useSelector((state) =>
-    state.board.issues.find((object) => object.id === issueId)
+  const issueRef = useRef(null);
+  const issue = useSelector((state) =>
+    state?.board?.issues?.find((issue) => {
+      // console.log(issue, "logging issues one bt one");
+      return issue.id === issueId;
+    })
   );
   const dispatch = useDispatch();
-
-  // console.log(card, "a specific issue")
+  // console.log(issueId, "particular issue Id");
+  // console.log(issue, "a specific issue");
   // console.log(issueId, "Issue id in frontend");
 
   useEffect(() => {
@@ -37,14 +40,14 @@ const Card = ({ issueId, list, index }) => {
   }, []);
 
   useEffect(() => {
-    if (card) {
-      setTitle(card.title);
+    if (issue) {
+      setTitle(issue.title);
     }
-  }, [card]);
+  }, [issue]);
 
   useEffect(() => {
-    cardRef && cardRef.current && setHeight(cardRef.current.clientHeight);
-  }, [list, card, cardRef]);
+    issueRef && issueRef.current && setHeight(issueRef.current.clientHeight);
+  }, [list, issue, issueRef]);
 
   const onSubmitEdit = async (e) => {
     e.preventDefault();
@@ -52,18 +55,57 @@ const Card = ({ issueId, list, index }) => {
     setEditing(false);
   };
 
-  return !card ? (
+  return !issue ? (
     ""
   ) : (
     <>
-      <CardModal
-        issueId={issueId}
-        open={openModal}
-        setOpen={setOpenModal}
-        card={card}
-        list={list}
-      />
-      {!editing ? (
+      <Link
+        to={`/issue/${issueId}`}
+        key={issueId}
+        style={{ textDecoration: "none" }}
+      >
+        <CardMUI className={`card ${!editing ? "mouse-over" : ""}`}>
+          {!editing && (
+            <Button
+              style={{
+                position: "absolute",
+                bottom: height - 40,
+                left: "180px",
+                zIndex: 1,
+              }}
+              onClick={() => setEditing(true)}
+            >
+              <EditIcon fontSize="small" />
+            </Button>
+          )}
+          <CardContent
+          // onClick={() => {
+          //   setOpenModal(true);
+          // }}
+          // ref={issueRef}
+          >
+            {issue.title && issue.title !== "none" && (
+              <div
+                className="card-label"
+                style={{ backgroundColor: issue.label }}
+              />
+            )}
+            <p>{issue.title}</p>
+            <div className="card-bottom">
+              <div className="card-bottom-left">
+                {issue.description && (
+                  <SubjectIcon
+                    className="description-indicator"
+                    fontSize="small"
+                  />
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </CardMUI>
+      </Link>
+
+      {/* {!editing ? (
         <CardMUI className={`card ${!editing ? "mouse-over" : ""}`}>
           {!editing && (
             <Button
@@ -82,18 +124,18 @@ const Card = ({ issueId, list, index }) => {
             onClick={() => {
               setOpenModal(true);
             }}
-            ref={cardRef}
+            ref={issueRef}
           >
-            {card.title && card.title !== "none" && (
+            {issue.title && issue.title !== "none" && (
               <div
                 className="card-label"
-                style={{ backgroundColor: card.label }}
+                style={{ backgroundColor: issue.label }}
               />
             )}
-            <p>{card.title}</p>
+            <p>{issue.title}</p>
             <div className="card-bottom">
               <div className="card-bottom-left">
-                {card.description && (
+                {issue.description && (
                   <SubjectIcon
                     className="description-indicator"
                     fontSize="small"
@@ -128,14 +170,14 @@ const Card = ({ issueId, list, index }) => {
               onClick={() => {
                 setEditing(false);
                 // setMouseOver(false);
-                setTitle(card.title);
+                setTitle(issue.title);
               }}
             >
               <CloseIcon />
             </Button>
           </div>
         </form>
-      )}
+      )} */}
     </>
   );
 };
