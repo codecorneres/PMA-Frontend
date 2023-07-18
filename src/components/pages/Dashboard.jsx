@@ -13,6 +13,10 @@ const Dashboard = () => {
   const loading = useSelector((state) => state?.board?.loading);
   const dispatch = useDispatch();
 
+  let checkAuth = localStorage.getItem("token");
+
+  // console.log(user, "logging user");
+
   useEffect(() => {
     dispatch(getProjects());
   }, []);
@@ -21,7 +25,8 @@ const Dashboard = () => {
     document.title = "Your Projects | CodeCorners PMA";
   }, []);
   console.log(isAuthenticated, "banana");
-  if (!isAuthenticated) {
+
+  if (!checkAuth) {
     return <Navigate to="/" />;
   }
 
@@ -29,8 +34,10 @@ const Dashboard = () => {
     <div className="dashboard-and-navbar">
       <Navbar />
       <section className="dashboard">
-        {/* <h1>Welcome {user && user.name}</h1> */}
-        <h1>Welcome User</h1>
+        <h1>
+          Welcome{" "}
+          {user && user.name.charAt(0).toUpperCase() + user.name.slice(1)}
+        </h1>
         <h2>Your projects</h2>
         {loading && <CircularProgress className="dashboard-loading" />}
         <div className="boards">

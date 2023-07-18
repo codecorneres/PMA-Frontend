@@ -7,7 +7,9 @@ const Navbar = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
-  if (!isAuthenticated) {
+  let checkAuth = localStorage.getItem("token");
+
+  if (!checkAuth) {
     return "";
   }
 

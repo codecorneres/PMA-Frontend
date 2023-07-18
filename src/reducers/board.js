@@ -14,6 +14,16 @@ import {
   ADD_LIST,
   UPDATE_LIST,
   DELETE_LIST,
+  ADD_COMMENT,
+  DELETE_COMMENT,
+  GET_COMMENTS,
+  GET_COMMENT,
+  UPDATE_COMMENT,
+  ADD_ATTACHMENT,
+  DELETE_ATTACHMENT,
+  GET_ATTACHMENTS,
+  GET_ATTACHMENT,
+  UPDATE_ATTACHMENT,
 } from "../actions/types";
 
 const initialState = {
@@ -23,6 +33,10 @@ const initialState = {
   issue: null,
   lists: [],
   list: null,
+  comments: [],
+  comment: null,
+  attachments: [],
+  attachment: null,
   loading: true,
   error: {},
 };
@@ -118,7 +132,7 @@ const boardReducer = (state = initialState, action) => {
       return {
         ...state,
         lists: state.lists.map((list) => {
-          if (list._id === payload._id) {
+          if (list.id === payload.id) {
             return payload;
           } else {
             return list;
@@ -130,6 +144,79 @@ const boardReducer = (state = initialState, action) => {
       return {
         ...state,
         lists: state.lists.filter((list) => list._id !== payload),
+        loading: false,
+      };
+    case GET_COMMENTS:
+      return {
+        ...state,
+        comments: payload.comments,
+        loading: false,
+      };
+    case GET_COMMENT:
+      return {
+        ...state,
+        comment: payload.comment,
+        loading: false,
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        comments: [payload, ...state.comments],
+        loading: false,
+      };
+    case UPDATE_COMMENT:
+      return {
+        ...state,
+        comments: state.comments.map((comment) => {
+          if (comment.id === payload.id) {
+            return payload;
+          } else {
+            return comment;
+          }
+        }),
+        loading: false,
+      };
+    case DELETE_COMMENT:
+      return {
+        ...state,
+        comments: state.comments.filter((comment) => comment.id !== payload.id),
+        loading: false,
+      };
+    case GET_ATTACHMENTS:
+      return {
+        ...state,
+        attachments: payload,
+        loading: false,
+      };
+    case GET_ATTACHMENT:
+      return {
+        ...state,
+        attachment: payload,
+        loading: false,
+      };
+    case ADD_ATTACHMENT:
+      return {
+        ...state,
+        attachments: [payload, ...state.attachments],
+        loading: false,
+      };
+    case UPDATE_ATTACHMENT:
+      return {
+        ...state,
+        attachments: state.attachments.map((attachment) => {
+          if (attachment.id === payload.id) {
+            return payload;
+          } else {
+            return attachment;
+          }
+        }),
+      };
+    case DELETE_ATTACHMENT:
+      return {
+        ...state,
+        attachments: state.attachments.filter(
+          (attachment) => attachment.id !== payload
+        ),
         loading: false,
       };
     default:

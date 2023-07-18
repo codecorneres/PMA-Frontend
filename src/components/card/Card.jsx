@@ -5,7 +5,6 @@ import { getIssue, updateIssue } from "../../actions/board";
 import { Link } from "react-router-dom";
 import CardMUI from "@material-ui/core/Card";
 import EditIcon from "@material-ui/icons/Edit";
-// import CloseIcon from "@material-ui/icons/Close";
 import SubjectIcon from "@material-ui/icons/Subject";
 import {
   TextField,
@@ -14,26 +13,19 @@ import {
   Avatar,
   Tooltip,
 } from "@material-ui/core";
-// import Issue from "../pages/Issue";
 
 const Card = ({ issueId, list, index }) => {
   const [editing, setEditing] = useState(false);
-  // const [openModal, setOpenModal] = useState(false);
   const [title, setTitle] = useState("");
   const [height, setHeight] = useState(0);
-  // const [completeItems, setCompleteItems] = useState(0);
 
   const issueRef = useRef(null);
   const issue = useSelector((state) =>
     state?.board?.issues?.find((issue) => {
-      // console.log(issue, "logging issues one bt one");
       return issue.id === issueId;
     })
   );
   const dispatch = useDispatch();
-  // console.log(issueId, "particular issue Id");
-  // console.log(issue, "a specific issue");
-  // console.log(issueId, "Issue id in frontend");
 
   useEffect(() => {
     dispatch(getIssue(issueId));

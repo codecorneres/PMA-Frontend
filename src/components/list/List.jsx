@@ -10,7 +10,7 @@ import CreateCardForm from "./CreateCardForm";
 import Button from "@material-ui/core/Button";
 
 const List = ({ listId, index }) => {
-  console.log(listId, "THE LIST iD THAT i WANT");
+  // console.log(listId, "THE LIST iD THAT i WANT");
   const [addingCard, setAddingCard] = useState(false);
   const list = useSelector((state) =>
     state?.board?.lists?.find((list) => {

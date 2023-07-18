@@ -15,6 +15,16 @@ import {
   ADD_LIST,
   UPDATE_LIST,
   DELETE_LIST,
+  ADD_COMMENT,
+  DELETE_COMMENT,
+  GET_COMMENTS,
+  GET_COMMENT,
+  UPDATE_COMMENT,
+  ADD_ATTACHMENT,
+  DELETE_ATTACHMENT,
+  GET_ATTACHMENTS,
+  GET_ATTACHMENT,
+  UPDATE_ATTACHMENT,
 } from "./types";
 import BASE_URL from "../utils/baseurl";
 
@@ -246,6 +256,161 @@ export const deleteList = (id) => async (dispatch) => {
 
     dispatch({
       type: DELETE_LIST,
+      payload: id,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Add Comment
+export const addComment = (body) => async (dispatch) => {
+  try {
+    const body = JSON.stringify({ body });
+
+    const res = await axios.post(`${BASE_URL}/comments/comment`, body, config);
+
+    dispatch({
+      type: ADD_COMMENT,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Get Comments
+export const getComments = () => async (dispatch) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/comments/comments`);
+
+    dispatch({
+      type: GET_COMMENTS,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Get Comment
+export const getComment = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/comments/comments/${id}`);
+
+    dispatch({
+      type: GET_COMMENT,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Update Comment
+export const updateComment = (id, body) => async (dispatch) => {
+  try {
+    const body = JSON.stringify({ body });
+    const res = await axios.put(
+      `${BASE_URL}/comments/comments/${id}`,
+      body,
+      config
+    );
+
+    dispatch({
+      type: UPDATE_COMMENT,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Delete Comment
+export const deleteComment = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`${BASE_URL}/comments/comments/${id}`);
+
+    dispatch({
+      type: DELETE_COMMENT,
+      payload: id,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Add Attachment
+export const addAttachment = (body) => async (dispatch) => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/attachments/attachment`,
+      body,
+      config
+    );
+
+    dispatch({
+      type: ADD_ATTACHMENT,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Get Attachments
+export const getAttachments = () => async (dispatch) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/attachments/attachments`);
+
+    dispatch({
+      type: GET_ATTACHMENTS,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Get Attachment
+export const getAttachment = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/attachments/attachments/${id}`);
+
+    dispatch({
+      type: GET_ATTACHMENT,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Update Attachment
+export const updateAttachment = (id, body) => async (dispatch) => {
+  try {
+    const res = await axios.put(
+      `${BASE_URL}/attachments/attachments/${id}`,
+      body,
+      config
+    );
+
+    dispatch({
+      type: UPDATE_ATTACHMENT,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Delete Attachment
+export const deleteAttachment = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`${BASE_URL}/attachments/attachments/${id}`);
+
+    dispatch({
+      type: DELETE_ATTACHMENT,
       payload: id,
     });
   } catch (error) {

@@ -17,6 +17,8 @@ const Board = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  let checkAuth = localStorage.getItem("token");
+
   // console.log(id, "id of the project");
   // console.log(project, "the whole project with lists and issues");
   // console.log(lists, "lists in frontend, banana");
@@ -33,7 +35,7 @@ const Board = () => {
     if (project?.title) document.title = project.title + " | CodeCorners PMA";
   }, [project?.title]);
 
-  if (!isAuthenticated) {
+  if (!checkAuth) {
     return <Navigate to="/" />;
   }
 

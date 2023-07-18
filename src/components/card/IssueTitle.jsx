@@ -19,7 +19,7 @@ const IssueTitle = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateProject(issue.id, title));
+    dispatch(updateIssue(issue.id, title));
     setEditing(false);
   };
 
