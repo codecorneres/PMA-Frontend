@@ -6,26 +6,26 @@ import { TextField } from "@material-ui/core";
 import { getIssue } from "../../actions/board";
 import { useSelector } from "react-redux";
 
-const IssueTitle = () => {
+const IssueTitle = ({ currIssue }) => {
   const issue = useSelector((state) => state.board.issue);
 
   const [editing, setEditing] = useState(false);
-  const [title, setTitle] = useState(issue.title);
+  const [title, setTitle] = useState(currIssue.title);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTitle(issue.title);
-  }, [issue.title]);
+    setTitle(currIssue.title);
+  }, [currIssue.title]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateIssue(issue.id, title));
+    dispatch(updateIssue(currIssue.id, { ...issue, title }));
     setEditing(false);
   };
 
   return !editing ? (
     <h2 className="board-title" onClick={() => setEditing(true)}>
-      {issue.title}
+      {currIssue.title}
     </h2>
   ) : (
     <form className="board-title-form" onSubmit={(e) => onSubmit(e)}>

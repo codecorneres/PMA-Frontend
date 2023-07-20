@@ -7,12 +7,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@material-ui/core";
 import useStyles from "../../utils/modalStyles";
 
-const TextEditor = ({ editing, setEditing, description }) => {
-  const issue = useSelector((state) => state.board.issue);
+const TextEditor = ({ editing, setEditing, descriptionBody, issue }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [description, setDescription] = useState(descriptionBody);
 
-  const handleDescription = async () => {
+  function handleDescriptionChange(value, delta, source, editor) {
+    setDescription(value.replaceAll(/<\/?p[^>]*>/g, "").replace("<br>", ""));
+  }
+
+  const onDescriptionSubmit = async () => {
     dispatch(updateIssue(issue?.id, { description }));
   };
 
@@ -92,6 +96,8 @@ const TextEditor = ({ editing, setEditing, description }) => {
     "size",
   ];
 
+  console.log(description, "the description in editor");
+
   return (
     <div>
       <p style={{ textAlign: "start", marginTop: "15px" }}>Add Description</p>
@@ -101,10 +107,8 @@ const TextEditor = ({ editing, setEditing, description }) => {
           modules={modules}
           formats={formats}
           placeholder="write your content ...."
-          onChange={(e) => {
-            handleDescription();
-          }}
-          value={description}
+          value={!description ? "<br>" : `<p>${description}</p>`}
+          onChange={handleDescriptionChange}
           style={{ height: "200px", width: "720px" }}
         ></ReactQuill>
       </div>
@@ -113,7 +117,10 @@ const TextEditor = ({ editing, setEditing, description }) => {
         variant="contained"
         color="primary"
         style={{ marginTop: "50px" }}
-        onClick={(e) => setEditing(false)}
+        onClick={() => {
+          onDescriptionSubmit();
+          setEditing(false);
+        }}
       >
         Save
       </Button>

@@ -13,12 +13,14 @@ const authReducer = (state = initialState, action) => {
   const { type, payload } = action;
   // console.log(payload, "token will lie here jghfasdweft");
   // console.log(type, "token will lie here type");
+  // console.log(payload, "user details");
 
   switch (type) {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
       // console.log("payload", payload);
       localStorage.setItem("token", payload.user.token);
+      localStorage.setItem("userInfo", JSON.stringify(payload.user));
       return {
         ...state,
         ...payload.user,

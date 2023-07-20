@@ -28,7 +28,7 @@ const DeleteCard = ({ issueId }) => {
   return (
     <div>
       <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-        Delete Card
+        Delete Issue
       </Button>
       <Dialog open={openDialog} onClose={handleClose}>
         <DialogTitle>{"Delete card?"}</DialogTitle>

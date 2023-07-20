@@ -66,11 +66,11 @@ export const getProject = (id) => async (dispatch) => {
 };
 
 // Add Project
-export const addProject = (formData) => async (dispatch) => {
+export const addProject = (body) => async (dispatch) => {
   try {
-    const body = JSON.stringify(formData);
+    const data = JSON.stringify({ body });
 
-    const res = await axios.post(`${BASE_URL}/projects/project`, body, config);
+    const res = await axios.post(`${BASE_URL}/projects/project`, data, config);
 
     dispatch({
       type: ADD_PROJECT,
@@ -144,9 +144,9 @@ export const getIssue = (id) => async (dispatch) => {
 };
 
 // Add Issue
-export const addIssue = (title) => async (dispatch) => {
+export const addIssue = (issueData) => async (dispatch) => {
   try {
-    const body = JSON.stringify({ title });
+    const body = JSON.stringify({ issueData });
     const res = await axios.post(`${BASE_URL}/issues/issue`, body, config);
     // console.log(res.data, "the issues which is returned");
     dispatch({
@@ -161,9 +161,12 @@ export const addIssue = (title) => async (dispatch) => {
 // Update Issue
 export const updateIssue = (id, formData) => async (dispatch) => {
   try {
+    const { description } = formData;
+    const body = JSON.stringify({ description });
+
     const res = await axios.put(
       `${BASE_URL}/issues/issues/${id}`,
-      formData,
+      body,
       config
     );
 
@@ -219,9 +222,9 @@ export const getList = (id) => async (dispatch) => {
 };
 
 // Add List
-export const addList = (title) => async (dispatch) => {
+export const addList = (listData) => async (dispatch) => {
   try {
-    const body = JSON.stringify({ title });
+    const body = JSON.stringify({ listData });
     const res = await axios.post(`${BASE_URL}/lists/list`, body, config);
 
     // console.log(res.data, "the added list, banana");
@@ -264,12 +267,12 @@ export const deleteList = (id) => async (dispatch) => {
 };
 
 // Add Comment
-export const addComment = (body) => async (dispatch) => {
+export const addComment = (commentData) => async (dispatch) => {
   try {
-    const body = JSON.stringify({ body });
+    const data = JSON.stringify({ commentData });
 
-    const res = await axios.post(`${BASE_URL}/comments/comment`, body, config);
-
+    const res = await axios.post(`${BASE_URL}/comments/comment`, data, config);
+    // console.log(res.data, "add comment api");
     dispatch({
       type: ADD_COMMENT,
       payload: res.data,
@@ -308,14 +311,17 @@ export const getComment = (id) => async (dispatch) => {
 };
 
 // Update Comment
-export const updateComment = (id, body) => async (dispatch) => {
+export const updateComment = (id, commentData) => async (dispatch) => {
   try {
-    const body = JSON.stringify({ body });
+    const body = JSON.stringify({ commentData });
+
     const res = await axios.put(
       `${BASE_URL}/comments/comments/${id}`,
       body,
       config
     );
+
+    console.log(res.data, "Update comment api");
 
     dispatch({
       type: UPDATE_COMMENT,

@@ -65,7 +65,7 @@ const Board = () => {
           {project?.lists?.map((listItem, index) => (
             <List key={listItem.id} listId={listItem.id} index={index} />
           ))}
-          <CreateList />
+          <CreateList project={project} />
         </div>
       </section>
     </div>

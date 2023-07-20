@@ -1,12 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { addList } from '../../actions/board';
-import { TextField, Button } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import React, { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addList } from "../../actions/board";
+import { TextField, Button } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
-const CreateList = () => {
+const CreateList = ({ project }) => {
   const [adding, setAdding] = useState(false);
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const dispatch = useDispatch();
 
   const formRef = useRef(null);
@@ -16,37 +16,41 @@ const CreateList = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(addList( title ));
-    setTitle('');
+    dispatch(
+      addList({ title, project_id: project.id, user_id: project.owner_id })
+    );
+    setTitle("");
   };
 
+  console.log(project, "user id");
+
   return !adding ? (
-    <div className='create-list-button'>
-      <Button variant='contained' onClick={() => setAdding(true)}>
+    <div className="create-list-button">
+      <Button variant="contained" onClick={() => setAdding(true)}>
         + Add a list
       </Button>
     </div>
   ) : (
-    <div ref={formRef} className='create-list-form'>
+    <div ref={formRef} className="create-list-form">
       <form onSubmit={(e) => onSubmit(e)}>
         <TextField
-          variant='outlined'
+          variant="outlined"
           fullWidth
-          margin='normal'
+          margin="normal"
           required
-          label='Enter list title'
+          label="Enter list title"
           autoFocus
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <div>
-          <Button type='submit' variant='contained' color='primary'>
+          <Button type="submit" variant="contained" color="primary">
             Add List
           </Button>
           <Button
             onClick={() => {
               setAdding(false);
-              setTitle('');
+              setTitle("");
             }}
           >
             <CloseIcon />

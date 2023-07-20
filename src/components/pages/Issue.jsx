@@ -1,96 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import { useDispatch } from "react-redux";
-// import PropTypes from "prop-types";
-// import { GithubPicker } from "react-color";
-// import { updateIssue } from "../../actions/board";
-// import { Modal, TextField, Button } from "@material-ui/core";
-// import CloseIcon from "@material-ui/icons/Close";
-// import DeleteCard from "../card/DeleteCard";
-// import useStyles from "../../utils/modalStyles";
-
-// const Issue = ({ issueId, open, setOpen, issue, list }) => {
-//   const classes = useStyles();
-//   const [title, setTitle] = useState(issue?.title);
-//   const [description, setDescription] = useState(issue?.description || "");
-//   const dispatch = useDispatch();
-
-//   useEffect(() => {
-//     setTitle(issue?.title);
-//     setDescription(issue?.description);
-//   }, [issue]);
-
-//   const onTitleDescriptionSubmit = async (e) => {
-//     e.preventDefault();
-//     dispatch(updateIssue(issueId, { title, description }));
-//   };
-//   console.log(issueId, open, setOpen, issue, list, "ttttt");
-
-//   return (
-//     <Modal open={open} onClose={() => setOpen(false)}>
-// <div className={`${classes.paper} ${classes.issueModal}`}>
-//   <form onSubmit={(e) => onTitleDescriptionSubmit(e)}>
-//     <div className={classes.modalTop}>
-//       <TextField
-//         variant="outlined"
-//         margin="normal"
-//         required
-//         fullWidth
-//         multiline
-//         label="Card title"
-//         value={title}
-//         onChange={(e) => setTitle(e.target.value)}
-//         onKeyDown={(e) =>
-//           e.key === "Enter" && onTitleDescriptionSubmit(e)
-//         }
-//         className={classes.cardTitle}
-//       />
-//       <Button onClick={() => setOpen(false)}>
-//         <CloseIcon />
-//       </Button>
-//     </div>
-//     <TextField
-//       variant="outlined"
-//       margin="normal"
-//       fullWidth
-//       multiline
-//       label="Card description"
-//       value={description}
-//       onChange={(e) => setDescription(e.target.value)}
-//     />
-//     <Button
-//       type="submit"
-//       variant="contained"
-//       color="primary"
-//       disabled={
-//         title === issue?.title &&
-//         (description === issue?.description ||
-//           (description === "" && !issue?.description))
-//       }
-//       className={classes.button}
-//     >
-//       Save All Changes
-//     </Button>
-//   </form>
-//   <div className={classes.modalSection}>
-//     <div className={classes.modalBottomRight}>
-//       <DeleteCard issueId={issueId} setOpen={setOpen} list={list} />
-//     </div>
-//   </div>
-// </div>
-//     </Modal>
-//   );
-// };
-
-// Issue.propTypes = {
-//   issueId: PropTypes.number.isRequired,
-//   open: PropTypes.bool.isRequired,
-//   setOpen: PropTypes.func.isRequired,
-//   card: PropTypes.object.isRequired,
-//   list: PropTypes.object.isRequired,
-// };
-
-// export default Issue;
-
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
@@ -124,6 +31,7 @@ const Issue = () => {
   const [comments, setComments] = useState(issue?.Comments || "");
   const [singleComment, setSingleComment] = useState("");
   const [editing, setEditing] = useState(false);
+  const [onCommentAdding, setonCommentAdding] = useState(false);
 
   let checkAuth = localStorage.getItem("token");
 
@@ -135,12 +43,18 @@ const Issue = () => {
 
   const onTitleDescriptionSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateIssue(issue?.id, { title, description }));
+    dispatch(updateIssue(issue?.id, { title }));
   };
 
-  const onCommentSubmit = async (e) => {
-    e.preventDefault();
-    dispatch(addComment({ singleComment }));
+  const onCommentSubmit = async () => {
+    // e.preventDefault();
+    dispatch(
+      addComment({
+        body: singleComment,
+        issue_id: Number(id),
+        project_id: issue.project_id,
+      })
+    );
   };
 
   useEffect(() => {
@@ -162,6 +76,8 @@ const Issue = () => {
 
   // console.log(issue, "the whole project with lists and issues");
   // console.log(comments, "All the comments");
+  // console.log(description, "description");
+  // console.log(singleComment, "singlecomment ");
 
   return !issue ? (
     <>
@@ -182,7 +98,7 @@ const Issue = () => {
       <section className="board">
         <div className="board-top">
           <div className="board-top-left">
-            <IssueTitle issue={issue} />
+            <IssueTitle currIssue={issue} />
           </div>
         </div>
 
@@ -210,9 +126,10 @@ const Issue = () => {
 
             {editing ? (
               <TextEditor
-                description={description}
+                descriptionBody={description}
                 editing={editing}
                 setEditing={setEditing}
+                issue={issue}
               />
             ) : (
               // Add textbox for editing description
@@ -229,51 +146,73 @@ const Issue = () => {
                 onClick={handleClick}
               >
                 {description}
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Praesentium tempore eius alias, necessitatibus quae maiores
-                voluptates nemo exercitationem sunt, error sint quam quasi.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum,
-                neque dolores? Assumenda inventore eligendi sapiente distinctio
-                repudiandae beatae porro accusantium fuga velit sit corrupti,
-                amet animi aperiam dolor nam, numquam veritatis dicta adipisci
-                eaque dolorem sint explicabo vitae. Eveniet laborum porro
-                deserunt magni, sequi commodi?
               </div>
             )}
 
-            <TextField
-              style={{ marginTop: "75px", marginBottom: "10px" }}
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              multiline
-              label="Add Comment"
-              value={singleComment}
-              onChange={(e) => setSingleComment(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && onCommentSubmit(e)}
-            />
-            {comments?.map((comment) => {
-              return (
-                <div style={{ marginTop: "10" }}>
-                  <CommentCard commentId={comment.id} />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {!onCommentAdding ? (
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  style={{ marginTop: "30px", marginBottom: "10px" }}
+                  className={classes.button}
+                  onClick={() => setonCommentAdding(true)}
+                >
+                  Add Comment
+                </Button>
+              ) : (
+                <div>
+                  <TextField
+                    style={{ marginTop: "30px", marginBottom: "10px" }}
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    label="Add Comment"
+                    value={singleComment}
+                    onChange={(e) => setSingleComment(e.target.value)}
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={() => {
+                      setonCommentAdding(false);
+                      onCommentSubmit();
+                      setSingleComment("");
+                    }}
+                    style={{ marginBottom: "10px" }}
+                  >
+                    Comment
+                  </Button>
                 </div>
-              );
-            })}
+              )}
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              style={{ marginTop: "50px" }}
-              disabled={
-                title === issue?.title &&
-                (description === issue?.description ||
-                  (description === "" && !issue?.description))
-              }
-              className={classes.button}
-            >
-              Save All Changes
-            </Button>
+              {comments?.map((comment) => {
+                return (
+                  <div key={comment.id} style={{ marginTop: "10px" }}>
+                    <CommentCard commentId={comment.id} />
+                  </div>
+                );
+              })}
+
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ marginTop: "50px" }}
+                disabled={
+                  title === issue?.title &&
+                  (description === issue?.description ||
+                    (description === "" && !issue?.description))
+                }
+                className={classes.button}
+              >
+                Save All Changes
+              </Button>
+            </div>
           </form>
           <div className={classes.modalSection}>
             <div className={classes.modalBottomRight}>

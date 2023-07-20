@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { addIssue } from "../../actions/board";
 import { Card, CardContent, TextField, Button } from "@material-ui/core";
@@ -8,6 +8,7 @@ import CloseIcon from "@material-ui/icons/Close";
 const CreateCardForm = ({ listId, setAdding }) => {
   const [title, setTitle] = useState("");
   const dispatch = useDispatch();
+  const project = useSelector((state) => state?.board?.project);
 
   const formRef = useRef(null);
   useEffect(() => {
@@ -16,11 +17,12 @@ const CreateCardForm = ({ listId, setAdding }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(addIssue(title));
+    dispatch(addIssue({ title, list_id: listId, project_id: project.id }));
     setTitle("");
   };
-  
+
   // console.log(title, listId, "sending listId and issue title")
+  console.log(project, "the currProject");
   return (
     <form
       ref={formRef}

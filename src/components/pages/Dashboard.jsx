@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import { getProjects } from "../../actions/board";
-import CreateBoard from "../other/CreateBoard";
+import CreateProject from "../other/CreateProject";
 import Navbar from "../other/Navbar";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -15,8 +15,6 @@ const Dashboard = () => {
 
   let checkAuth = localStorage.getItem("token");
 
-  // console.log(user, "logging user");
-
   useEffect(() => {
     dispatch(getProjects());
   }, []);
@@ -24,12 +22,13 @@ const Dashboard = () => {
   useEffect(() => {
     document.title = "Your Projects | CodeCorners PMA";
   }, []);
-  console.log(isAuthenticated, "banana");
 
   if (!checkAuth) {
     return <Navigate to="/" />;
   }
 
+  // console.log(user, "logging user");
+  // console.log(isAuthenticated, "banana");
   return (
     <div className="dashboard-and-navbar">
       <Navbar />
@@ -50,7 +49,7 @@ const Dashboard = () => {
               {project.title}
             </Link>
           ))}
-          <CreateBoard />
+          <CreateProject />
         </div>
       </section>
     </div>

@@ -70,12 +70,7 @@ const Card = ({ issueId, list, index }) => {
               <EditIcon fontSize="small" />
             </Button>
           )}
-          <CardContent
-          // onClick={() => {
-          //   setOpenModal(true);
-          // }}
-          // ref={issueRef}
-          >
+          <CardContent>
             {issue.title && issue.title !== "none" && (
               <div
                 className="card-label"
@@ -96,80 +91,6 @@ const Card = ({ issueId, list, index }) => {
           </CardContent>
         </CardMUI>
       </Link>
-
-      {/* {!editing ? (
-        <CardMUI className={`card ${!editing ? "mouse-over" : ""}`}>
-          {!editing && (
-            <Button
-              style={{
-                position: "absolute",
-                bottom: height - 40,
-                left: "180px",
-                zIndex: 1,
-              }}
-              onClick={() => setEditing(true)}
-            >
-              <EditIcon fontSize="small" />
-            </Button>
-          )}
-          <CardContent
-            onClick={() => {
-              setOpenModal(true);
-            }}
-            ref={issueRef}
-          >
-            {issue.title && issue.title !== "none" && (
-              <div
-                className="card-label"
-                style={{ backgroundColor: issue.label }}
-              />
-            )}
-            <p>{issue.title}</p>
-            <div className="card-bottom">
-              <div className="card-bottom-left">
-                {issue.description && (
-                  <SubjectIcon
-                    className="description-indicator"
-                    fontSize="small"
-                  />
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </CardMUI>
-      ) : (
-        <form className="create-card-form" onSubmit={(e) => onSubmitEdit(e)}>
-          <CardMUI>
-            <CardContent className="card-edit-content">
-              <TextField
-                margin="normal"
-                fullWidth
-                multiline
-                required
-                label="Edit this card's title"
-                autoFocus
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                onKeyDownCapture={(e) => e.key === "Enter" && onSubmitEdit(e)}
-              />
-            </CardContent>
-          </CardMUI>
-          <div className="card-actions">
-            <Button type="submit" variant="contained" color="primary">
-              Save
-            </Button>
-            <Button
-              onClick={() => {
-                setEditing(false);
-                // setMouseOver(false);
-                setTitle(issue.title);
-              }}
-            >
-              <CloseIcon />
-            </Button>
-          </div>
-        </form>
-      )} */}
     </>
   );
 };
