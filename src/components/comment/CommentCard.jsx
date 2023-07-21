@@ -20,7 +20,7 @@ const CommentCard = ({ commentId }) => {
 
   useEffect(() => {
     dispatch(getComment(commentId));
-  }, []);
+  }, [getComment]);
 
   useEffect(() => {
     if (comment) {

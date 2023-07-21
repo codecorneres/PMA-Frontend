@@ -5,6 +5,7 @@ import { updateProject, deleteProject } from "../../actions/board";
 import { TextField } from "@material-ui/core";
 import { getProject } from "../../actions/board";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Button, Menu, MenuItem } from "@material-ui/core";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { Navigate } from "react-router-dom";
@@ -15,6 +16,8 @@ const BoardTitle = ({ board }) => {
   const project = useSelector((state) => state?.board?.project);
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,7 +30,7 @@ const BoardTitle = ({ board }) => {
   const handleDeleteProject = () => {
     dispatch(deleteProject(board.id));
     handleClose();
-    return <Navigate to="/dashboard" />;
+    navigate("/dashboard");
   };
 
   const handleEditProjectName = () => {
@@ -45,7 +48,7 @@ const BoardTitle = ({ board }) => {
     setEditing(false);
   };
 
-  console.log(board.id, "the project to be deleted");
+  // console.log(board.id, "the project to be deleted");
 
   return !editing ? (
     <div style={{ display: "flex", gap: "10px" }}>

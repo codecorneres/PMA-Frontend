@@ -18,6 +18,7 @@ const CreateProject = () => {
     e.preventDefault();
     dispatch(addProject({ title, owner_id: user?.id }));
     setTitle("");
+    setOpen(false);
   };
 
   // console.log(user, "bananana");

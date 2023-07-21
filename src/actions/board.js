@@ -71,10 +71,11 @@ export const addProject = (body) => async (dispatch) => {
     const data = JSON.stringify({ body });
 
     const res = await axios.post(`${BASE_URL}/projects/project`, data, config);
+    console.log(res.data, "resssss");
 
     dispatch({
       type: ADD_PROJECT,
-      payload: res.data,
+      payload: res.data.project,
     });
   } catch (error) {
     console.log(error);
@@ -227,7 +228,7 @@ export const addList = (listData) => async (dispatch) => {
     const body = JSON.stringify({ listData });
     const res = await axios.post(`${BASE_URL}/lists/list`, body, config);
 
-    // console.log(res.data, "the added list, banana");
+    console.log(res.data, "the added list, banana");
     dispatch({
       type: ADD_LIST,
       payload: res.data,

@@ -61,7 +61,7 @@ const boardReducer = (state = initialState, action) => {
     case ADD_PROJECT:
       return {
         ...state,
-        projects: [payload, ...state.projects],
+        projects: [...state.projects, payload],
         loading: false,
       };
     case UPDATE_PROJECT:
@@ -125,7 +125,7 @@ const boardReducer = (state = initialState, action) => {
     case ADD_LIST:
       return {
         ...state,
-        lists: [payload, ...state.lists],
+        lists: [...state.lists, payload],
         loading: false,
       };
     case UPDATE_LIST:

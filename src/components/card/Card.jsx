@@ -29,7 +29,7 @@ const Card = ({ issueId, list, index }) => {
 
   useEffect(() => {
     dispatch(getIssue(issueId));
-  }, []);
+  }, [getIssue, dispatch, issueId]);
 
   useEffect(() => {
     if (issue) {

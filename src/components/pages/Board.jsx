@@ -11,25 +11,36 @@ import Navbar from "../other/Navbar";
 import { useParams } from "react-router-dom";
 
 const Board = () => {
+  const { id } = useParams();
+
   const project = useSelector((state) => state?.board?.project);
+  const projects = useSelector((state) =>
+    state?.board?.projects.filter((item) => item.project_id === id)
+  );
   // const lists = useSelector((state) => state?.board?.lists);
   const isAuthenticated = useSelector((state) => state?.auth?.isAuthenticated);
   const dispatch = useDispatch();
-  const { id } = useParams();
+
+  console.log(project, "projectsprojects");
+
+  let getProjectsss = projects?.filter((item) => item.id == id);
+  console.log(getProjectsss, id, "getProject");
+
+  const lists = useSelector((state) =>
+    state?.board?.lists?.filter((list) => {
+      return list.id === id;
+    })
+  );
 
   let checkAuth = localStorage.getItem("token");
 
-  // console.log(id, "id of the project");
-  // console.log(project, "the whole project with lists and issues");
-  // console.log(lists, "lists in frontend, banana");
-
   useEffect(() => {
     dispatch(getProject(id));
-  }, [dispatch, id]);
+  }, [getProject, id]);
 
   useEffect(() => {
     dispatch(getLists());
-  }, [dispatch]);
+  }, [getLists]);
 
   useEffect(() => {
     if (project?.title) document.title = project.title + " | CodeCorners PMA";
@@ -38,7 +49,11 @@ const Board = () => {
   if (!checkAuth) {
     return <Navigate to="/" />;
   }
-
+  // console.log("Testing multiple calls, Project");
+  console.log(lists, "dudeeeee");
+  // console.log(id, "id of the project");
+  // console.log(project, "the whole project with lists and issues");
+  // console.log(lists, "lists in frontend, banana");
   return !project ? (
     <>
       <Navbar />

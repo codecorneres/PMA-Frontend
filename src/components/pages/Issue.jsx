@@ -3,14 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import {
   addComment,
-  getComments,
   getComment,
+  getComments,
   getIssue,
 } from "../../actions/board";
 import { updateIssue } from "../../actions/board";
 import { CircularProgress, Box } from "@material-ui/core";
 import { Modal, TextField, Button } from "@material-ui/core";
-import { TextareaAutosize } from "@mui/base";
 import IssueTitle from "../card/IssueTitle";
 import Navbar from "../other/Navbar";
 import { useParams } from "react-router-dom";
@@ -60,7 +59,7 @@ const Issue = () => {
   useEffect(() => {
     dispatch(getIssue(id));
     dispatch(getComments());
-  }, [dispatch, id]);
+  }, [getComments, getIssue, id]);
 
   useEffect(() => {
     if (issue?.title) document.title = issue.title + " | CodeCorners PMA";

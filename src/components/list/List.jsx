@@ -10,33 +10,35 @@ import CreateCardForm from "./CreateCardForm";
 import Button from "@material-ui/core/Button";
 
 const List = ({ listId, index }) => {
-  // console.log(listId, "THE LIST iD THAT i WANT");
   const [addingCard, setAddingCard] = useState(false);
+  const lists = useSelector((state) => state?.board?.lists);
   const list = useSelector((state) =>
     state?.board?.lists?.find((list) => {
-      // console.log(list, "all lists with be logged");
       return list.id === listId;
     })
   );
-  // const issues = useSelector((state) => state.board.issues);
+  // const issues = useSelector((state) => state?.board?.issues);
 
   const dispatch = useDispatch();
-  // console.log(list, "a single list");
-  // console.log(issues, "issues in a list")
 
   useEffect(() => {
     dispatch(getList(listId));
-  }, [dispatch, listId]);
+  }, [getList, dispatch, listId]);
 
   useEffect(() => {
     dispatch(getIssues());
-  }, [dispatch]);
+  }, [getIssues, dispatch]);
 
   const createCardFormRef = useRef(null);
   useEffect(() => {
     addingCard && createCardFormRef.current.scrollIntoView();
   }, [addingCard]);
 
+  console.log(list, "dudeeeeesssss");
+  // console.log(listId, "THE LIST iD THAT i WANT");
+  // console.log(list, "a single list");
+  // console.log(issues, "issues in a list")
+  // const issues = useSelector((state) => state.board.issues);
   return (
     <div className="list-wrapper">
       <div className="list-top">

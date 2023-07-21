@@ -22,7 +22,7 @@ const CreateList = ({ project }) => {
     setTitle("");
   };
 
-  console.log(project, "user id");
+  // console.log(project, "user id");
 
   return !adding ? (
     <div className="create-list-button">

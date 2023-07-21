@@ -14,10 +14,11 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   let checkAuth = localStorage.getItem("token");
+  console.log(projects, "projecttttt");
 
   useEffect(() => {
     dispatch(getProjects());
-  }, []);
+  }, [getProjects]);
 
   useEffect(() => {
     document.title = "Your Projects | CodeCorners PMA";
@@ -27,7 +28,7 @@ const Dashboard = () => {
     return <Navigate to="/" />;
   }
 
-  // console.log(user, "logging user");
+  // console.log("Testing multiple calls, Projects");
   // console.log(isAuthenticated, "banana");
   return (
     <div className="dashboard-and-navbar">
