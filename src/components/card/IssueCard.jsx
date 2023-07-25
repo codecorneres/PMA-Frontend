@@ -1,35 +1,20 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { getIssue, updateIssue } from "../../actions/board";
+import { getProject, updateIssue } from "../../actions/board";
 import { Link } from "react-router-dom";
 import CardMUI from "@material-ui/core/Card";
 import EditIcon from "@material-ui/icons/Edit";
 import SubjectIcon from "@material-ui/icons/Subject";
-import {
-  TextField,
-  CardContent,
-  Button,
-  Avatar,
-  Tooltip,
-} from "@material-ui/core";
+import { CardContent, Button } from "@material-ui/core";
 
-const Card = ({ issueId, list, index }) => {
+const IssueCard = ({ list, issue }) => {
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState("");
   const [height, setHeight] = useState(0);
 
   const issueRef = useRef(null);
-  const issue = useSelector((state) =>
-    state?.board?.issues?.find((issue) => {
-      return issue.id === issueId;
-    })
-  );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getIssue(issueId));
-  }, [getIssue, dispatch, issueId]);
 
   useEffect(() => {
     if (issue) {
@@ -43,17 +28,19 @@ const Card = ({ issueId, list, index }) => {
 
   const onSubmitEdit = async (e) => {
     e.preventDefault();
-    dispatch(updateIssue(issueId, { title }));
+    dispatch(updateIssue(issue.id, { title }));
     setEditing(false);
   };
+
+  console.log(issue, "this is the issue sent");
 
   return !issue ? (
     ""
   ) : (
     <>
       <Link
-        to={`/issue/${issueId}`}
-        key={issueId}
+        to={`/issue/${issue.id}`}
+        key={issue.id}
         style={{ textDecoration: "none" }}
       >
         <CardMUI className={`card ${!editing ? "mouse-over" : ""}`}>
@@ -71,16 +58,16 @@ const Card = ({ issueId, list, index }) => {
             </Button>
           )}
           <CardContent>
-            {issue.title && issue.title !== "none" && (
+            {issue?.title && issue?.title !== "none" && (
               <div
                 className="card-label"
                 style={{ backgroundColor: issue.label }}
               />
             )}
-            <p>{issue.title}</p>
+            <p>{issue?.title}</p>
             <div className="card-bottom">
               <div className="card-bottom-left">
-                {issue.description && (
+                {issue?.description && (
                   <SubjectIcon
                     className="description-indicator"
                     fontSize="small"
@@ -95,10 +82,8 @@ const Card = ({ issueId, list, index }) => {
   );
 };
 
-Card.propTypes = {
-  issueId: PropTypes.number.isRequired,
+IssueCard.propTypes = {
   list: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
 };
 
-export default Card;
+export default IssueCard;

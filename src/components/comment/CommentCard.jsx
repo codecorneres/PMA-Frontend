@@ -4,23 +4,18 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SubjectIcon from "@material-ui/icons/Subject";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteComment, getComment, updateComment } from "../../actions/board";
+import {
+  deleteComment,
+  getComment,
+  getIssue,
+  updateComment,
+} from "../../actions/board";
 import { useEffect, useState } from "react";
 
-const CommentCard = ({ commentId }) => {
+const CommentCard = ({ commentId, comment, issueId }) => {
   const [commentBody, setCommentBody] = useState("");
   const [commentEditing, setCommentEditing] = useState(false);
-
-  const comment = useSelector((state) =>
-    state?.board?.comments?.find((comment) => {
-      return comment.id === commentId;
-    })
-  );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getComment(commentId));
-  }, [getComment]);
 
   useEffect(() => {
     if (comment) {
@@ -30,6 +25,9 @@ const CommentCard = ({ commentId }) => {
 
   const handleDelete = () => {
     dispatch(deleteComment(commentId));
+    setTimeout(() => {
+      dispatch(getIssue(issueId));
+    }, 50);
   };
   const handleEdit = () => {
     setCommentEditing(true);
@@ -42,9 +40,10 @@ const CommentCard = ({ commentId }) => {
         project_id: comment.project_id,
       })
     );
+    setTimeout(() => {
+      dispatch(getIssue(issueId));
+    }, 50);
   };
-
-  // console.log(comment, "a single comment for card");
 
   return (
     <>

@@ -25,6 +25,9 @@ import {
   GET_ATTACHMENTS,
   GET_ATTACHMENT,
   UPDATE_ATTACHMENT,
+  ADD_TIMESHEET,
+  GET_TIMESHEETS,
+  DELETE_TIMESHEET,
 } from "./types";
 import BASE_URL from "../utils/baseurl";
 
@@ -71,12 +74,13 @@ export const addProject = (body) => async (dispatch) => {
     const data = JSON.stringify({ body });
 
     const res = await axios.post(`${BASE_URL}/projects/project`, data, config);
-    console.log(res.data, "resssss");
+    // console.log(res.data, "resssss");
 
     dispatch({
       type: ADD_PROJECT,
       payload: res.data.project,
     });
+    dispatch(getProjects);
   } catch (error) {
     console.log(error);
   }
@@ -96,6 +100,7 @@ export const updateProject = (id, title) => async (dispatch) => {
       type: UPDATE_PROJECT,
       payload: res.data,
     });
+    dispatch(getProject(id));
   } catch (error) {
     console.log(error);
   }
@@ -110,6 +115,7 @@ export const deleteProject = (id) => async (dispatch) => {
       type: DELETE_PROJECT,
       payload: id,
     });
+    dispatch(getProject(id));
   } catch (error) {
     console.log(error);
   }
@@ -149,11 +155,13 @@ export const addIssue = (issueData) => async (dispatch) => {
   try {
     const body = JSON.stringify({ issueData });
     const res = await axios.post(`${BASE_URL}/issues/issue`, body, config);
-    // console.log(res.data, "the issues which is returned");
+
     dispatch({
       type: ADD_ISSUE,
       payload: res.data,
     });
+
+    dispatch(getProject(issueData.project_id));
   } catch (error) {
     console.log(error);
   }
@@ -162,14 +170,16 @@ export const addIssue = (issueData) => async (dispatch) => {
 // Update Issue
 export const updateIssue = (id, formData) => async (dispatch) => {
   try {
-    const { description } = formData;
-    const body = JSON.stringify({ description });
+    const { description, title } = formData;
+    // console.log(id, description, title, "ggggggggggg in actions");
+    const body = JSON.stringify({ description, title });
 
     const res = await axios.put(
       `${BASE_URL}/issues/issues/${id}`,
       body,
       config
     );
+    dispatch(getIssue(id));
 
     dispatch({
       type: UPDATE_ISSUE,
@@ -183,12 +193,13 @@ export const updateIssue = (id, formData) => async (dispatch) => {
 // Delete Issue
 export const deleteIssue = (id) => async (dispatch) => {
   try {
-    await axios.delete(`${BASE_URL}/issues/issues/${id}`);
+    const res = await axios.delete(`${BASE_URL}/issues/issues/${id}`);
 
     dispatch({
       type: DELETE_ISSUE,
       payload: id,
     });
+    dispatch(getProject(res.data.project_id));
   } catch (error) {
     console.log(error);
   }
@@ -228,11 +239,11 @@ export const addList = (listData) => async (dispatch) => {
     const body = JSON.stringify({ listData });
     const res = await axios.post(`${BASE_URL}/lists/list`, body, config);
 
-    console.log(res.data, "the added list, banana");
     dispatch({
       type: ADD_LIST,
       payload: res.data,
     });
+    dispatch(getProject(listData.project_id));
   } catch (error) {
     console.log(error);
   }
@@ -256,12 +267,13 @@ export const updateList = (id, title) => async (dispatch) => {
 // Delete List
 export const deleteList = (id) => async (dispatch) => {
   try {
-    await axios.delete(`${BASE_URL}/lists/lists/${id}`);
+    const res = await axios.delete(`${BASE_URL}/lists/lists/${id}`);
 
     dispatch({
       type: DELETE_LIST,
       payload: id,
     });
+    dispatch(getProject(res.data.project_id));
   } catch (error) {
     console.log(error);
   }
@@ -322,7 +334,7 @@ export const updateComment = (id, commentData) => async (dispatch) => {
       config
     );
 
-    console.log(res.data, "Update comment api");
+    // console.log(res.data, "Update comment api");
 
     dispatch({
       type: UPDATE_COMMENT,
@@ -418,6 +430,52 @@ export const deleteAttachment = (id) => async (dispatch) => {
 
     dispatch({
       type: DELETE_ATTACHMENT,
+      payload: id,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Add Timesheets
+export const addTimesheet = (body) => async (dispatch) => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/timesheets/timesheet`,
+      body,
+      config
+    );
+
+    dispatch({
+      type: ADD_TIMESHEET,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Get Timesheets of a User
+export const getTimesheetsOfUser = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/timesheets/timesheets/${id}`);
+    // console.log(res.data, "timesheets in actions");
+    dispatch({
+      type: GET_TIMESHEETS,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Delete a Timesheet
+export const deleteTimesheet = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`${BASE_URL}/timesheets/timesheet/${id}`);
+
+    dispatch({
+      type: DELETE_TIMESHEET,
       payload: id,
     });
   } catch (error) {

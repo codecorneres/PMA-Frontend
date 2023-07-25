@@ -2,23 +2,26 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import { getProjects } from "../../actions/board";
+import { getLists, getProjects } from "../../actions/board";
 import CreateProject from "../other/CreateProject";
 import Navbar from "../other/Navbar";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const Dashboard = () => {
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const projects = useSelector((state) => state?.board?.projects);
   const loading = useSelector((state) => state?.board?.loading);
   const dispatch = useDispatch();
 
   let checkAuth = localStorage.getItem("token");
-  console.log(projects, "projecttttt");
 
   useEffect(() => {
     dispatch(getProjects());
-  }, [getProjects]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getLists());
+  }, [dispatch]);
 
   useEffect(() => {
     document.title = "Your Projects | CodeCorners PMA";
@@ -28,8 +31,6 @@ const Dashboard = () => {
     return <Navigate to="/" />;
   }
 
-  // console.log("Testing multiple calls, Projects");
-  // console.log(isAuthenticated, "banana");
   return (
     <div className="dashboard-and-navbar">
       <Navbar />

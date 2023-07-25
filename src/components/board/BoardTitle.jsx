@@ -30,7 +30,9 @@ const BoardTitle = ({ board }) => {
   const handleDeleteProject = () => {
     dispatch(deleteProject(board.id));
     handleClose();
-    navigate("/dashboard");
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 50);
   };
 
   const handleEditProjectName = () => {
@@ -74,7 +76,7 @@ const BoardTitle = ({ board }) => {
             handleClose();
           }}
         >
-          Delete List
+          Delete Project
         </MenuItem>
       </Menu>
     </div>

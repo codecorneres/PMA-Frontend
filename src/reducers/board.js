@@ -24,6 +24,9 @@ import {
   GET_ATTACHMENTS,
   GET_ATTACHMENT,
   UPDATE_ATTACHMENT,
+  ADD_TIMESHEET,
+  GET_TIMESHEETS,
+  DELETE_TIMESHEET,
 } from "../actions/types";
 
 const initialState = {
@@ -37,6 +40,8 @@ const initialState = {
   comment: null,
   attachments: [],
   attachment: null,
+  timesheets: [],
+  timesheet: null,
   loading: true,
   error: {},
 };
@@ -217,6 +222,26 @@ const boardReducer = (state = initialState, action) => {
         attachments: state.attachments.filter(
           (attachment) => attachment.id !== payload
         ),
+        loading: false,
+      };
+    case ADD_TIMESHEET:
+      return {
+        ...state,
+        timesheets: [payload, ...state.timesheets],
+        loading: false,
+      };
+    case GET_TIMESHEETS:
+      return {
+        ...state,
+        timesheets: payload,
+        loading: false,
+      };
+    case DELETE_TIMESHEET:
+      return {
+        ...state,
+        timesheets: state.timesheets.filter((timesheet) => {
+          return timesheet.id !== payload;
+        }),
         loading: false,
       };
     default:

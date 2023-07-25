@@ -444,3 +444,12 @@ body {
 .board .lists .list-wrapper .list .cards .mouse-over {
   background-color: whitesmoke;
 }
+
+.issueTitle {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: 1px solid gray;
+  padding: 8px 10px;
+}

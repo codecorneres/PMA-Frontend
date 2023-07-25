@@ -7,14 +7,16 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
-
-const DeleteCard = ({ issueId }) => {
+import { useNavigate } from "react-router-dom";
+const DeleteCard = ({ issueId, project_id }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpenDialog(true);
   };
+
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setOpenDialog(false);
@@ -23,6 +25,9 @@ const DeleteCard = ({ issueId }) => {
   const onDeleteCard = async () => {
     dispatch(deleteIssue(issueId));
     setOpenDialog(false);
+    setTimeout(() => {
+      navigate(`/board/${project_id}`);
+    }, 50);
   };
 
   return (

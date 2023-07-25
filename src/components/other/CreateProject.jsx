@@ -21,8 +21,6 @@ const CreateProject = () => {
     setOpen(false);
   };
 
-  // console.log(user, "bananana");
-
   const body = (
     <div className={`${classes.paper} ${classes.createBoardModal}`}>
       <div className={classes.modalTop}>

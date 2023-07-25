@@ -100,7 +100,7 @@ const TextEditor = ({ editing, setEditing, descriptionBody, issue }) => {
 
   return (
     <div>
-      <p style={{ textAlign: "start", marginTop: "15px" }}>Add Description</p>
+      <p style={{ textAlign: "start", marginTop: "50px" }}>Add Description</p>
       <div style={{ display: "grid", justifyContent: "center" }}>
         <ReactQuill
           theme="snow"

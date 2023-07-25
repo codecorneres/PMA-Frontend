@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
-import {
-  addComment,
-  getComment,
-  getComments,
-  getIssue,
-} from "../../actions/board";
+import { addComment, getIssue, getProject } from "../../actions/board";
 import { updateIssue } from "../../actions/board";
 import { CircularProgress, Box } from "@material-ui/core";
-import { Modal, TextField, Button } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import IssueTitle from "../card/IssueTitle";
 import Navbar from "../other/Navbar";
 import { useParams } from "react-router-dom";
@@ -17,53 +12,57 @@ import useStyles from "../../utils/modalStyles";
 import DeleteCard from "../card/DeleteCard";
 import TextEditor from "../other/TextEditor";
 import CommentCard from "../comment/CommentCard";
+import TimesheetCard from "../Timesheet/TimesheetCard";
 
 const Issue = () => {
-  const issue = useSelector((state) => state?.board?.issue);
-  const isAuthenticated = useSelector((state) => state?.auth?.isAuthenticated);
   const dispatch = useDispatch();
   const { id } = useParams();
   const classes = useStyles();
-
-  const [title, setTitle] = useState(issue?.title);
-  const [description, setDescription] = useState(issue?.description || "");
-  const [comments, setComments] = useState(issue?.Comments || "");
+  const currentIssue = useSelector((state) => state?.board?.issue);
+  const [title, setTitle] = useState(currentIssue?.title);
+  const [description, setDescription] = useState(
+    currentIssue?.description || ""
+  );
+  const [comments, setComments] = useState(currentIssue?.Comments || "");
   const [singleComment, setSingleComment] = useState("");
   const [editing, setEditing] = useState(false);
   const [onCommentAdding, setonCommentAdding] = useState(false);
 
+  let user = JSON.parse(localStorage.getItem("userInfo"));
   let checkAuth = localStorage.getItem("token");
 
   useEffect(() => {
-    setTitle(issue?.title);
-    setComments(issue?.Comments);
-    setDescription(issue?.description);
-  }, [issue]);
+    setTitle(currentIssue?.title);
+    setComments(currentIssue?.Comments);
+    setDescription(currentIssue?.description);
+  }, [currentIssue]);
+
+  useEffect(() => {
+    dispatch(getIssue(id));
+  }, []);
 
   const onTitleDescriptionSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateIssue(issue?.id, { title }));
+    dispatch(updateIssue(currentIssue?.id, { title }));
   };
 
   const onCommentSubmit = async () => {
-    // e.preventDefault();
     dispatch(
       addComment({
         body: singleComment,
         issue_id: Number(id),
-        project_id: issue.project_id,
+        project_id: currentIssue.project_id,
       })
     );
+    setTimeout(() => {
+      dispatch(getIssue(currentIssue.id));
+    }, 50);
   };
 
   useEffect(() => {
-    dispatch(getIssue(id));
-    dispatch(getComments());
-  }, [getComments, getIssue, id]);
-
-  useEffect(() => {
-    if (issue?.title) document.title = issue.title + " | CodeCorners PMA";
-  }, [issue?.title]);
+    if (currentIssue?.title)
+      document.title = currentIssue.title + " | CodeCorners PMA";
+  }, [currentIssue?.title]);
 
   if (!checkAuth) {
     return <Navigate to="/" />;
@@ -72,13 +71,9 @@ const Issue = () => {
   const handleClick = (e) => {
     setEditing(true);
   };
+  console.log(currentIssue, "the issue we need");
 
-  // console.log(issue, "the whole project with lists and issues");
-  // console.log(comments, "All the comments");
-  // console.log(description, "description");
-  // console.log(singleComment, "singlecomment ");
-
-  return !issue ? (
+  return !currentIssue ? (
     <>
       <Navbar />
       <Box className="board-loading">
@@ -97,7 +92,7 @@ const Issue = () => {
       <section className="board">
         <div className="board-top">
           <div className="board-top-left">
-            <IssueTitle currIssue={issue} />
+            <IssueTitle currIssue={currentIssue} />
           </div>
         </div>
 
@@ -106,21 +101,17 @@ const Issue = () => {
           style={{ marginTop: "100px", maxHeight: "750px" }}
         >
           <form onSubmit={(e) => onTitleDescriptionSubmit(e)}>
-            <div className={classes.modalTop}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                multiline
-                label="Card title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                onKeyDown={(e) =>
-                  e.key === "Enter" && onTitleDescriptionSubmit(e)
-                }
-                className={classes.cardTitle}
-              />
+            <div
+              className={classes.modalTop}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <h3 style={{ marginBottom: "-25px" }} className="issueTitle">
+                Issue: {title}
+              </h3>
             </div>
 
             {editing ? (
@@ -128,7 +119,7 @@ const Issue = () => {
                 descriptionBody={description}
                 editing={editing}
                 setEditing={setEditing}
-                issue={issue}
+                issue={currentIssue}
               />
             ) : (
               // Add textbox for editing description
@@ -192,30 +183,26 @@ const Issue = () => {
               {comments?.map((comment) => {
                 return (
                   <div key={comment.id} style={{ marginTop: "10px" }}>
-                    <CommentCard commentId={comment.id} />
+                    <CommentCard
+                      commentId={comment.id}
+                      comment={comment}
+                      issueId={currentIssue.id}
+                    />
                   </div>
                 );
               })}
 
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                style={{ marginTop: "50px" }}
-                disabled={
-                  title === issue?.title &&
-                  (description === issue?.description ||
-                    (description === "" && !issue?.description))
-                }
-                className={classes.button}
-              >
-                Save All Changes
-              </Button>
+              <div className="cards">
+                <TimesheetCard key={user?.id} timesheetId={user?.id} />
+              </div>
             </div>
           </form>
           <div className={classes.modalSection}>
             <div className={classes.modalBottomRight}>
-              <DeleteCard issueId={issue?.id} />
+              <DeleteCard
+                issueId={currentIssue?.id}
+                project_id={currentIssue.project_id}
+              />
             </div>
           </div>
         </div>
