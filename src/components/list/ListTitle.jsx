@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { updateList } from "../../actions/board";
+import { getIssue, getProject, updateList } from "../../actions/board";
 import { TextField } from "@material-ui/core";
 
 const ListTitle = ({ list }) => {
@@ -17,6 +17,9 @@ const ListTitle = ({ list }) => {
     e.preventDefault();
     dispatch(updateList(list?.id, title));
     setEditing(false);
+    setTimeout(() => {
+      dispatch(getProject(list.project_id));
+    }, 50);
   };
 
   return !editing ? (

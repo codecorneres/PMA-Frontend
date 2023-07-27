@@ -5,7 +5,6 @@ import Landing from "./components/pages/Landing";
 import Board from "./components/pages/Board";
 import Dashboard from "./components/pages/Dashboard";
 import Issue from "./components/pages/Issue";
-import Timesheets from "./components/pages/Timesheet";
 import { Provider } from "react-redux";
 import store from "./store";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -23,7 +22,6 @@ function App() {
             <Route path="/board/:id" element={<Board />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/issue/:id" element={<Issue />} />
-            <Route path="/timesheet/:id" element={<Timesheets />} />
           </Routes>
         </>
       </Router>

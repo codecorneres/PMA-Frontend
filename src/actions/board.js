@@ -171,7 +171,7 @@ export const addIssue = (issueData) => async (dispatch) => {
 export const updateIssue = (id, formData) => async (dispatch) => {
   try {
     const { description, title } = formData;
-    // console.log(id, description, title, "ggggggggggg in actions");
+    console.log(id, description, title, "ggggggggggg in actions");
     const body = JSON.stringify({ description, title });
 
     const res = await axios.put(
@@ -450,13 +450,14 @@ export const addTimesheet = (body) => async (dispatch) => {
       type: ADD_TIMESHEET,
       payload: res.data,
     });
+    dispatch(getIssue(body.issue_id));
   } catch (error) {
     console.log(error);
   }
 };
 
 // Get Timesheets of a User
-export const getTimesheetsOfUser = (id) => async (dispatch) => {
+export const getTimesheetsOfIssue = (id) => async (dispatch) => {
   try {
     const res = await axios.get(`${BASE_URL}/timesheets/timesheets/${id}`);
     // console.log(res.data, "timesheets in actions");

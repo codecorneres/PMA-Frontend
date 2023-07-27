@@ -5,19 +5,19 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import { Button } from "@material-ui/core";
-import Navbar from "../other/Navbar";
 import TimeTable from "../Timesheet/TimeTable";
 import { addTimesheet, getIssue } from "../../actions/board";
+// import { useParams } from "react-router-dom";
 
 export default function Timesheet() {
-  const { id } = useParams();
   const dispatch = useDispatch();
   const project = useSelector((state) => state?.board?.project);
   const issue = useSelector((state) => state?.board?.issue);
+  const user = JSON.parse(localStorage.getItem("userInfo"));
   const [startVal, setStartVal] = React.useState(dayjs("2022-04-17T15:30"));
   const [endVal, setEndVal] = React.useState(dayjs("2022-04-17T15:30"));
+  // const { id } = useParams();
 
   const totalTime = (endVal - startVal) / (1000 * 60);
 
@@ -31,35 +31,17 @@ export default function Timesheet() {
         startTime: startVal,
         endTime: endVal,
         time_in_minutes: totalTime,
-        user_id: Number(id),
+        user_id: Number(user.id),
         project_id: Number(project.id),
         issue_id: Number(issue.id),
       })
     );
-    dispatch(getIssue(issue.id));
-    console.log(id, project.id, issue.id, "checkidddd");
+
+    console.log(issue.id, project.id, issue.id, "checkidddd");
   };
 
-  // const getCurrentIssue = () => {
-  //   dispatch(getIssue(issue.id));
-  // };
-  // useEffect(() => {
-  //   getCurrentIssue();
-  // }, [handleTimeSubmit]);
-
-  console.log(id, "logging the userId");
-  console.log(id, project.id, issue.id, "checkidddd");
-
   return (
-    <div
-      className="board-and-navbar"
-      style={{
-        backgroundImage:
-          "url(https://images.unsplash.com/photo-1598197748967-b4674cb3c266?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80)",
-      }}
-    >
-      <Navbar />
-
+    <div className="board-and-navbar" style={{ maxHeight: "70vh" }}>
       <div
         style={{
           display: "flex",
@@ -75,11 +57,10 @@ export default function Timesheet() {
             justifyContent: "center",
             alignItems: "center",
             marginBottom: "60px",
-            marginTop: "30px",
             backgroundColor: "white",
-            padding: "20px 10px",
-            borderRadius: "5px",
-            width: "45%",
+            marginTop: "45px",
+            padding: "10px 10px",
+            width: "80%",
             border: "1px solid gray",
           }}
         >
@@ -167,7 +148,7 @@ export default function Timesheet() {
           flexDirection: "column",
         }}
       >
-        <TimeTable />
+        <TimeTable issue={issue} />
       </div>
     </div>
   );

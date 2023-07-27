@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { addComment, getIssue, getProject } from "../../actions/board";
+import { addComment, getIssue } from "../../actions/board";
 import { updateIssue } from "../../actions/board";
 import { CircularProgress, Box } from "@material-ui/core";
 import { TextField, Button } from "@material-ui/core";
@@ -28,7 +28,6 @@ const Issue = () => {
   const [editing, setEditing] = useState(false);
   const [onCommentAdding, setonCommentAdding] = useState(false);
 
-  let user = JSON.parse(localStorage.getItem("userInfo"));
   let checkAuth = localStorage.getItem("token");
 
   useEffect(() => {
@@ -193,7 +192,10 @@ const Issue = () => {
               })}
 
               <div className="cards">
-                <TimesheetCard key={user?.id} timesheetId={user?.id} />
+                <TimesheetCard
+                  key={currentIssue?.id}
+                  issueId={currentIssue?.id}
+                />
               </div>
             </div>
           </form>

@@ -27,13 +27,11 @@ const columns = [
   },
 ];
 
-export default function TimeTable() {
+export default function TimeTable({ issue }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const issue = useSelector((state) => state?.board?.issue);
 
   const tableData = issue?.Timesheets?.map((timesheet) => {
-    console.log(timesheet.id, "timesheet Id");
     return {
       IssueTitle: issue.title,
       Start: timesheet.startTime,
@@ -42,7 +40,7 @@ export default function TimeTable() {
       id: timesheet.id,
     };
   });
-  console.log(issue?.Timesheets, "getdattttttt");
+  console.log(issue?.Timesheets, "timesheets of issue");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -58,13 +56,11 @@ export default function TimeTable() {
   return (
     <Paper
       sx={{
-        width: "70%",
+        width: "98%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        borderRadius: "8px",
-        border: "1px solid gray",
       }}
     >
       <TableContainer sx={{ maxHeight: 440 }}>

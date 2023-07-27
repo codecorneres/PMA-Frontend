@@ -18,6 +18,9 @@ const TextEditor = ({ editing, setEditing, descriptionBody, issue }) => {
 
   const onDescriptionSubmit = async () => {
     dispatch(updateIssue(issue?.id, { description }));
+    setTimeout(() => {
+      dispatch(getIssue(issue?.id));
+    }, 50);
   };
 
   var modules = {
