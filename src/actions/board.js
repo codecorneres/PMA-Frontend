@@ -28,6 +28,8 @@ import {
   ADD_TIMESHEET,
   GET_TIMESHEETS,
   DELETE_TIMESHEET,
+  MOVE_ISSUE,
+  MOVE_LIST,
 } from "./types";
 import BASE_URL from "../utils/baseurl";
 
@@ -482,4 +484,38 @@ export const deleteTimesheet = (id) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+// Move Issue
+export const moveIssue = (issueId, formData) => async (dispatch) => {
+  console.log("moveIssue");
+  // try {
+  //   const body = JSON.stringify(formData);
+
+  //   const res = await axios.put(`/api/issue/moveIssues/${issueId}`, body, config);
+
+  //   dispatch({
+  //     type: MOVE_ISSUE,
+  //     payload: res.data,
+  //   });
+  // } catch (error) {
+  //     console.log(error);
+  // }
+};
+
+// Move list
+export const moveList = (listId, formData) => async (dispatch) => {
+  console.log("moveList");
+  // try {
+  //   const body = JSON.stringify(formData);
+
+  //   const res = await axios.put(`/api/lists/moveLists/${listId}`, body, config);
+
+  //   dispatch({
+  //     type: MOVE_LIST,
+  //     payload: res.data,
+  //   });
+  // } catch (error) {
+  //     console.log(error)
+  // }
 };

@@ -70,7 +70,7 @@ const Issue = () => {
   const handleClick = (e) => {
     setEditing(true);
   };
-  console.log(currentIssue, "the issue we need");
+  // console.log(currentIssue, "the issue we need");
 
   return !currentIssue ? (
     <>

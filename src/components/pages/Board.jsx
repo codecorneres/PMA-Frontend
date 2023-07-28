@@ -1,20 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { getProject } from "../../actions/board";
 import { CircularProgress, Box } from "@material-ui/core";
 import BoardTitle from "../board/BoardTitle";
-import List from "../list/List";
 import CreateList from "../board/CreateList";
 import Navbar from "../other/Navbar";
 import { useParams } from "react-router-dom";
+import { moveIssue, moveList } from "../../actions/board";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import List from "../list/List";
 
 const Board = () => {
+  // the state will be multiple lists
   const { id } = useParams();
   const dispatch = useDispatch();
   let checkAuth = localStorage.getItem("token");
   const project = useSelector((state) => state?.board?.project);
-  const currentLists = project?.lists;
+  // const currentLists = project?.lists;
+
+  const [addingCard, setAddingCard] = useState(false);
+  const createCardFormRef = useRef(null);
 
   const getAllIssues = () => {
     console.log("gettings all lists", id);
@@ -28,9 +34,31 @@ const Board = () => {
     if (project?.title) document.title = project.title + " | CodeCorners PMA";
   }, [project?.title]);
 
+  useEffect(() => {
+    addingCard && createCardFormRef.current.scrollIntoView();
+  }, [addingCard]);
+
   if (!checkAuth) {
     return <Navigate to="/" />;
   }
+
+  const onDragEnd = (result) => {
+    const { source, destination, draggableId, type } = result;
+    if (!destination) {
+      return;
+    }
+    if (type === "card") {
+      dispatch(
+        moveIssue(draggableId, {
+          fromId: source.droppableId,
+          toId: destination.droppableId,
+          toIndex: destination.index,
+        })
+      );
+    } else {
+      dispatch(moveList(draggableId, { toIndex: destination.index }));
+    }
+  };
 
   // console.log(project, "Centralised data");
   return !project ? (
@@ -55,12 +83,24 @@ const Board = () => {
             <BoardTitle board={project} />
           </div>
         </div>
-        <div className="lists">
-          {currentLists?.map((listItem) => (
-            <List key={listItem.id} list={listItem} />
-          ))}
-          <CreateList project={project} />
-        </div>
+
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="all-lists" direction="horizontal" type="list">
+            {(provided) => (
+              <div
+                className="lists"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {project.lists.map((list, index) => (
+                  <List key={list.id} list={list} index={index} />
+                ))}
+                {provided.placeholder}
+                <CreateList />
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </section>
     </div>
   );

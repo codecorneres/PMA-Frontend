@@ -40,7 +40,6 @@ export default function TimeTable({ issue }) {
       id: timesheet.id,
     };
   });
-  console.log(issue?.Timesheets, "timesheets of issue");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -51,7 +50,8 @@ export default function TimeTable({ issue }) {
     setPage(0);
   };
 
-  console.log(issue, "current issue belonging user");
+  // console.log(issue?.Timesheets, "timesheets of issue");
+  // console.log(issue, "current issue belonging user");
 
   return (
     <Paper

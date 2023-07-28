@@ -27,6 +27,7 @@ import {
   ADD_TIMESHEET,
   GET_TIMESHEETS,
   DELETE_TIMESHEET,
+  MOVE_LIST,
 } from "../actions/types";
 
 const initialState = {
@@ -243,6 +244,14 @@ const boardReducer = (state = initialState, action) => {
           return timesheet.id !== payload;
         }),
         loading: false,
+      };
+    case MOVE_LIST:
+      return {
+        ...state,
+        project: {
+          ...state.board.project,
+          lists: payload,
+        },
       };
     default:
       return state;
